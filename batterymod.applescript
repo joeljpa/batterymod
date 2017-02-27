@@ -15,7 +15,11 @@ on idle
 	#screen status
 	do shell script ("mkdir -p " & dFolder)
 	set screenState to (do shell script "pmset -g log | grep -E 'turned on|turned off' | grep  -A60 \"$(date -v-1M '+%Y-%m-%d %H:%M';)\" | tail -n1 | awk '{print $8}'") as text
-	do shell script ("echo \"$(date)\" pmset gave " & screenState & " >>" & dFolder & "log.txt")
+	if (screenState contains "") then
+		do shell script ("echo \"$(date)\" pmset gave " & screenState & " >>" & dFolder & "log.txt")
+	else
+		do shell script ("echo \"$(date)\" pmset gave nothing" & " >>" & dFolder & "log.txt")
+	end if
 	if (screenState contains "on") or (screenState contains "off") then
 		#display notification "Battery" subtitle "hey man, it's " & screenState
 		set finalScreenState to screenState
@@ -41,5 +45,5 @@ on idle
 		set numbuh to 0
 	end if
 	
-	return 60
+	return 59
 end idle

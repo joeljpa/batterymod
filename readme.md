@@ -14,5 +14,7 @@ versus
 #features
 - grep command redundant
 - options, disable specific feature without quitting
-- tell when three days haven't been checked or deleted
-- caculate time etc in a report file
+- tell when three days haven't been checked or deleted or just cron a shell script to delete older 
+	older than a week
+- caculate time etc in a report file (caveats like anything even remotely lesser than ten minutes 
+	won't be logged)

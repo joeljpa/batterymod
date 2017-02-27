@@ -1,6 +1,6 @@
 property lowBattery : 10
 global n, dFolder, i, finalScreenState, numbuh
-set dFolder to "/Stuff/Myprojects/batterymod/test/" #			for test use only
+set dFolder to "~/Stuff/Myprojects/batterymod/test/" #			for test use only
 set numbuh to 0
 set finalScreenState to "on"
 
@@ -15,18 +15,16 @@ repeat 100 times
 	#screen status
 	do shell script ("mkdir -p " & dFolder)
 	set screenState to (do shell script "pmset -g log | grep -E 'turned on|turned off' | grep  -A60 \"$(date -v-1M '+%Y-%m-%d %H:%M';)\" | tail -n1 | awk '{print $8}'") as text
-	if (screenState contains "") then
+	if (screenState is not equal to "") then
 		do shell script ("echo \"$(date)\" pmset gave " & screenState & " >>" & dFolder & "log.txt")
 	else
 		do shell script ("echo \"$(date)\" pmset gave nothing" & " >>" & dFolder & "log.txt")
 	end if
 	if (screenState contains "on") or (screenState contains "off") then
-		#display notification "Battery" subtitle "hey man, it's " & screenState
 		set finalScreenState to screenState
 		do shell script ("echo \"$(date)\" contained on/off " & finalScreenState & ">>" & dFolder & "log.txt")
 	else
 		do shell script ("echo \"$(date)\" moved along " & finalScreenState & ">>" & dFolder & "log.txt")
-		#display notification "move along"
 	end if
 	do shell script ("echo \"$(date)\" final " & finalScreenState & ">>" & dFolder & "log.txt")
 	

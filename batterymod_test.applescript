@@ -34,12 +34,14 @@ repeat 100 times
 			set ssdate to (do shell script "date '+%Y-%m-%d_%H-%M'")
 			do shell script ("/usr/sbin/screencapture " & dFolder & ssdate & ".png")
 			do shell script ("echo \"$(date)\" screenshot attempted" & ">>" & dFolder & "log.txt")
+			#add session to records
 			display notification "Logged."
 			set numbuh to 1
 		else
 			set numbuh to numbuh + 1
 		end if
 	else
+		#tally the completed session
 		set numbuh to 0
 	end if
 	

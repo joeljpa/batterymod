@@ -1,8 +1,10 @@
 property lowBattery : 10
-global n, dFolder, i, finalScreenState, numbuh
+property timex : 5
+global n, dFolder, i, finalScreenState, numbuh, session
 set dFolder to "~/Desktop/batterymod_log/"
 set numbuh to 0
 set finalScreenState to "on"
+set session to 0
 
 on idle
 	
@@ -21,29 +23,32 @@ on idle
 		do shell script ("echo \"$(date)\" pmset gave nothing" & " >>" & dFolder & "log.txt")
 	end if
 	if (screenState contains "on") or (screenState contains "off") then
-		#display notification "Battery" subtitle "hey man, it's " & screenState
 		set finalScreenState to screenState
 		do shell script ("echo \"$(date)\" contained on/off " & finalScreenState & ">>" & dFolder & "log.txt")
 	else
 		do shell script ("echo \"$(date)\" moved along " & finalScreenState & ">>" & dFolder & "log.txt")
-		#display notification "move along"
 	end if
 	do shell script ("echo \"$(date)\" final " & finalScreenState & ">>" & dFolder & "log.txt")
 	
 	#screen shot
 	if (finalScreenState contains "on") then
-		if (numbuh is equal to 10) then
+		if {numbuh is equal to 100} then
 			set ssdate to (do shell script "date '+%Y-%m-%d_%H-%M'")
 			do shell script ("/usr/sbin/screencapture " & dFolder & ssdate & ".png")
 			do shell script ("echo \"$(date)\" screenshot attempted" & ">>" & dFolder & "log.txt")
+			#add session to records
 			display notification "Logged."
 			set numbuh to 1
+			set session to session + 1
 		else
 			set numbuh to numbuh + 1
 		end if
-	else
+	else if (finalScreenState contains "off") then
+		#tally the completed session
+		do shell script ("echo \"$(date)\" total sessions was " & session & " and lost so many units: " & numbuh & " >>" & dFolder & "log.txt")
+		set session to 0
 		set numbuh to 0
 	end if
 	
-	return 59
+	return timex
 end idle

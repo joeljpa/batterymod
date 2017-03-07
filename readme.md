@@ -10,6 +10,8 @@ versus
 2017-02-25 18:18:08 +0530 Notification            Display is turned on
 2017-02-25 18:23:10 +0530 Notification            Display is turned off
 2017-02-25 19:57:26 +0530 Notification            Display is turned on
+2. Instant sleep (closing lid without screenoff) won't detect off
+3. Below 10% and charging nags till it passes ten
 
 #features
 - grep command redundant

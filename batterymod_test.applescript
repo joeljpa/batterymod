@@ -1,10 +1,11 @@
 property lowBattery : 10
-global n, dFolder, i, finalScreenState, numbuh
+global n, dFolder, i, finalScreenState, numbuh, session
 set dFolder to "~/Stuff/Myprojects/batterymod/test/" #			for test use only
 set numbuh to 0
 set finalScreenState to "on"
+set session to 0
 
-repeat 100 times
+repeat 500 times #runs barely half an hour at this rate
 	
 	#battery status
 	set battStatus to (do shell script "pmset -g ps | grep -o  '..%' | sed -e 's/%//g'")
@@ -30,18 +31,21 @@ repeat 100 times
 	
 	#screen shot
 	if (finalScreenState contains "on") then
-		if (numbuh is equal to 10) then
+		if {numbuh is equal to 100} then
 			set ssdate to (do shell script "date '+%Y-%m-%d_%H-%M'")
 			do shell script ("/usr/sbin/screencapture " & dFolder & ssdate & ".png")
 			do shell script ("echo \"$(date)\" screenshot attempted" & ">>" & dFolder & "log.txt")
 			#add session to records
 			display notification "Logged."
 			set numbuh to 1
+			set session to session + 1
 		else
 			set numbuh to numbuh + 1
 		end if
-	else
+	else if (finalScreenState contains "off") then
 		#tally the completed session
+		do shell script ("echo \"$(date)\" total sessions was " & session & " and lost so many units: " & numbuh & " >>" & dFolder & "log.txt")
+		set session to 0
 		set numbuh to 0
 	end if
 	

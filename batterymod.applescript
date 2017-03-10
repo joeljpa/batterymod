@@ -1,5 +1,5 @@
 property lowBattery : 10
-property timex : 5
+property timex : 59
 global n, dFolder, i, finalScreenState, numbuh, session
 set dFolder to "~/Desktop/batterymod_log/"
 set numbuh to 0
@@ -32,7 +32,7 @@ on idle
 	
 	#screen shot
 	if (finalScreenState contains "on") then
-		if {numbuh is equal to 100} then
+		if {numbuh is equal to 10} then
 			set ssdate to (do shell script "date '+%Y-%m-%d_%H-%M'")
 			do shell script ("/usr/sbin/screencapture " & dFolder & ssdate & ".png")
 			do shell script ("echo \"$(date)\" screenshot attempted" & ">>" & dFolder & "log.txt")

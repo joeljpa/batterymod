@@ -32,9 +32,9 @@ on idle
 	
 	#screen shot
 	if (finalScreenState contains "on") then
-		if {numbuh is equal to 10} then
+		if {numbuh is equal to 10} then #at smaller query-time values, there's an additional second to account for running this itself; so a 5 second query would required 100 not 120 for every ten minutes
 			set ssdate to (do shell script "date '+%Y-%m-%d_%H-%M'")
-			do shell script ("/usr/sbin/screencapture " & dFolder & ssdate & ".png")
+			do shell script ("/usr/sbin/screencapture -x " & dFolder & ssdate & ".png")
 			do shell script ("echo \"$(date)\" screenshot attempted" & ">>" & dFolder & "log.txt")
 			#add session to records
 			display notification "Logged."

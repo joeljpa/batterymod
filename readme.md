@@ -10,6 +10,7 @@
 - options, disable specific feature without quitting
 - tell when three days haven't been checked or deleted or just cron a shell script to delete older 
 	older than a week
+- - need to check the various log files, images are stale enough to be deleted
 - calculate time etc in a separate human readable report file (log caveats like anything even remotely lesser than ten minutes 
 	won't be logged, usable history even after images deleted)
 - log battery less than 10 percent as well

@@ -1,1 +1,1 @@
-watch -n 59 ~/Stuff/Myprojects/batterymod/batterymod.sh
+watch -n 10 ~/Stuff/Myprojects/batterymod/batterymod.sh

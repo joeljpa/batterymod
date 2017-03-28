@@ -1,6 +1,8 @@
 #!/bin/bash
-#Copy this to a separate location for cron to use, so ongoing development won't affect it
-DFOLDER=~/Stuff/Myprojects/batterymod/test/  #for debug, change
+#Copy this to a separate location for cron to use, so ongoing development won't affect it, note the places labelled "for debug"
+
+DFOLDER=~/Stuff/Myprojects/batterymod/test/  #for debug
+#DFOLDER=~/Desktop/batterymod_log/  #for running
 
 mkdir -p $DFOLDER
 
@@ -17,6 +19,10 @@ variableReset ()
     SESSION_NO=0
     echo $NUMBUH >"$DFOLDER"session.txt 
     echo $SESSION_NO >>"$DFOLDER"session.txt
+    if [[ -f "$DFOLDER"screenstatus.txt ]]
+    then
+        rm "$DFOLDER"screenstatus.txt
+    fi
     echo $(date) variables resseted >>"$DFOLDER"log.txt
 }
 
@@ -43,30 +49,37 @@ BATTSTATUS=$(pmset -g ps | grep -o  '..%' | sed -e 's/%//g') #quotes removed her
 LOWBATTERY=10
 if [[ "$BATTSTATUS" -lt "$LOWBATTERY" &&  "$BATTSTATUS" -ne "00" ]]
 then
-    osascript -e "display notification \"Battery power is lower than $LOWBATTERY percent.\""
+    osascript -e "display notification \"Battery power is lower than $LOWBATTERY percent.\" with title \"Batterymod\""
 fi
 
 #Screen status
-FINAL_SCREENSTATE="on"
+if [[ -f "$DFOLDER"screenstatus.txt ]]
+then 
+    FINAL_SCREENSTATE=$(cat "$DFOLDER"screenstatus.txt)
+    echo $(date) FINAL_SCREENSTATE retreived and is $FINAL_SCREENSTATE >>"$DFOLDER"log.txt
+else
+    FINAL_SCREENSTATE="on"
+fi
 SCREENSTATUS=$(pmset -g log | grep -E 'turned on|turned off' | grep  -A60 "$(date -v-1M '+%Y-%m-%d %H:%M';)" | tail -n1 | awk '{print $8}')
 if [[ ! -z "$SCREENSTATUS"  ]]
 then
     echo $(date) pmset gave $SCREENSTATUS, final set to this >>"$DFOLDER"log.txt
-    FINAL_SCREENSTATE=$SCREENSTATUS
+    echo $SCREENSTATUS >"$DFOLDER"screenstatus.txt
 else
     echo $(date) pmset gave nothing, final is $FINAL_SCREENSTATE >>"$DFOLDER"log.txt
 fi
 
 #Screenshot
-if [[ "$FINAL_SCREENSTATE" -eq "on" ]]
+if [[ "$FINAL_SCREENSTATE" == "on" ]]
 then 
     if [[ "$NUMBUH" -eq "10" ]] #at smaller query-time values, there's an additional second to account for running this itself; 
                                 #so a 5 second query would required 100 not 120 for every ten minutes
     then
         SSDATE=$(date '+%Y-%m-%d_%H-%M')
-        /usr/sbin/screencapture -x "$DFOLDER""$SSDATE".png
-        echo $(date) screenshot "$DFOLDER""$SSDATE".png attempted >>"$DFOLDER"log.txt
-        osascript -e "display notification \"Logged (test).\""  #for debug, change message if confusing with main running
+        /usr/sbin/screencapture -x "$DFOLDER""$SSDATE".png #for debug
+        echo $(date) screenshot "$DFOLDER""$SSDATE".png attempted >>"$DFOLDER"log.txt 
+        osascript -e "display notification \"Logged (test).\" with title \"Batterymod\""  #for debug
+        #osascript -e "display notification \"Logged.\" with title \"Batterymod\""  #for running
         NUMBUH=1
         SESSION_NO=$(($SESSION_NO + 1))
         echo $NUMBUH >"$DFOLDER"session.txt

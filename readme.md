@@ -13,5 +13,5 @@
 - - need to check the various log files, images are stale enough to be deleted
 - calculate time etc in a separate human readable report file (log caveats like anything even remotely lesser than ten minutes 
 	won't be logged, usable history even after images deleted)
-- log battery less than 10 percent as well
+- log the battery less than 10 percent as well
 - minimise irritating screenshot notifications

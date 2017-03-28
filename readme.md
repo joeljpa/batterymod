@@ -15,3 +15,4 @@
 	won't be logged, usable history even after images deleted)
 - log the battery less than 10 percent as well
 - minimise irritating screenshot notifications
+- move debug log to separate folder, keep human readable outside

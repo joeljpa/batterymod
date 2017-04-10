@@ -16,4 +16,4 @@
 	won't be logged, usable history even after images deleted)
 - - Sessions only count tally when off, try to mimic Awareness and log that
 - minimise irritating screenshot notifications
-- check even things like energy load (pmset?) and memory usage, notify when crosses a threshold
+- check even things like energy load (pmset?), storage and memory usage, notify when crosses a threshold

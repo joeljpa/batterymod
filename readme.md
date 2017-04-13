@@ -17,3 +17,4 @@
 - - Sessions only count tally when off, try to mimic Awareness and log that
 - minimise irritating screenshot notifications
 - check even things like energy load (pmset?), notify when crosses a threshold but make nagging optional
+- deprecate Awareness's role completely in addition to having more control and options with it

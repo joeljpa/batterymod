@@ -1,15 +1,12 @@
 #!/bin/bash
 
 #version 0.41
-#Copy this to a separate location for cron to use, so ongoing development won't affect it, note the places labelled "for debug" (redundant, simplify)
+#Copy this to a separate location for cron to use, so ongoing development won't affect it
 
 DEBUG=0
 if [[ $1 -eq 1 ]] 
 then
     DEBUG=1
-    echo debug enabled
-else 
-    echo normal mode...
 fi
 
 if [[ $DEBUG -eq 1 ]]

@@ -42,7 +42,6 @@ variableReset ()
 #Session data
 if [[ ! -f "$DFOLDER"session/main.txt ]]
 then
-    echo "var doesn't exist"
     variableReset
 else
     MOD_DATE=$(ls -lT "$DFOLDER"session/main.txt | awk '{print $6, $7, $8, $9}')
@@ -51,7 +50,6 @@ else
     if [[ "$COMP_MOD_DATE" -gt "120" ]]
     then
         variableReset
-        echo "var was old"
     else
         NUMBUH=$(head -n1 "$DFOLDER"session/main.txt)
         SESSION_NO=$(tail -n1 "$DFOLDER"session/main.txt)

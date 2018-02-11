@@ -39,7 +39,7 @@ variableReset ()
     VAR_RESET=1
 }
 
-#Session data
+#Session data retrieving
 if [[ ! -f "$DFOLDER"session/main.txt ]]
 then
     variableReset
@@ -60,7 +60,6 @@ fi
 
 #Screen status
 if [[ -f "$DFOLDER"session/screenstatus.txt ]]
-#if [[ -n $SCREENSTATUS ]]
 then 
     FINAL_SCREENSTATE=$(cat "$DFOLDER"session/screenstatus.txt)
     echo $(date "+%a %b %d %T %Z %Y") FINAL_SCREENSTATE retreived and is $FINAL_SCREENSTATE >>"$DFOLDER"session/log.txt
@@ -71,7 +70,7 @@ fi
 SCREENSTATUS=$(pmset -g log | grep -E 'turned on|turned off'| grep -A60 "$(date -v-1M '+%Y-%m-%d %H:%M')" | tail -n1 | awk '{print $8}')
 #search in pmset log for entries timed 1 minute ago onwards max 60 items
 
-if [[ ! -z "$SCREENSTATUS"  ]]
+if [[ ! -z "$SCREENSTATUS"  ]] #difference with -n ?
 then
     echo $(date "+%a %b %d %T %Z %Y") pmset gave $SCREENSTATUS, final set to this >>"$DFOLDER"session/log.txt
     echo $SCREENSTATUS >"$DFOLDER"session/screenstatus.txt
@@ -84,6 +83,7 @@ if [[ "$FINAL_SCREENSTATE" == "on" ]]
 then 
     if [[ "$NUMBUH" -eq "10" ]] 
     then
+        #Take a screenshot
         SSDATE=$(date '+%Y-%m-%d_%H-%M')
         if [[ $DEBUG -eq 1 ]]
         then
@@ -100,6 +100,7 @@ then
         echo $SESSION_NO >>"$DFOLDER"session/main.txt        
         echo $(date "+%a %b %d %T %Z %Y") Reached 10: sessions are $SESSION_NO and units are $NUMBUH  >>"$DFOLDER"session/log.txt
     else
+        #keep counting
         FINAL_LOG=$SESSION_NO.$NUMBUH
         NUMBUH=$(($NUMBUH + 1))
         echo $NUMBUH >"$DFOLDER"session/main.txt
@@ -107,6 +108,7 @@ then
         echo $(date "+%a %b %d %T %Z %Y") Counting: sessions are $SESSION_NO and units are $NUMBUH  >>"$DFOLDER"session/log.txt
     fi
 else
+    #screen off so reset timer
     echo $(date "+%a %b %d %T %Z %Y") total sessions was $SESSION_NO and lost so many units: $NUMBUH  >>"$DFOLDER"session/log.txt
     #update report
     NUMBUH=0 && SESSION_NO=0

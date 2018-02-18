@@ -10,7 +10,7 @@ then
 fi
 
 if [[ $DEBUG -eq 1 ]]
-then  #change as required
+then 
     DFOLDER=~/Stuff/Myprojects/batterymod/test/
 else
     DFOLDER=~/Desktop/batterymod_log/
@@ -110,7 +110,6 @@ then
 else
     #screen off so reset timer
     echo $(date "+%a %b %d %T %Z %Y") total sessions was $SESSION_NO and lost so many units: $NUMBUH  >>"$DFOLDER"session/log.txt
-    #update report
     NUMBUH=0 && SESSION_NO=0
     echo $NUMBUH >"$DFOLDER"session/main.txt
     echo $SESSION_NO >>"$DFOLDER"session/main.txt        
